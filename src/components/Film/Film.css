@@ -1,7 +1,11 @@
 .Film {
-    max-width: 400px;
+    max-width: 300px;
 }
 
 .Film-banner {
     height: 200px;
+}
+
+.Film-description {
+    text-align: justify;
 }
