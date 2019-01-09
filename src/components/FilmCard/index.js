@@ -3,32 +3,32 @@ import PropTypes from 'prop-types';
 import { Card, CardHeader, CardMedia, CardContent, Typography, IconButton } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 
-import './Film.css';
+import './FilmCard.css';
 
-const Film = ({ film, onClickEdit }) => 
-    <Card className='Film'>
+const FilmCard = ({ film, onClickEdit }) => 
+    <Card className='FilmCard'>
         <CardHeader
             title={film.name}
             subheader={film.year + ' - ' + film.country}
             action={
-                <IconButton onClick={onClickEdit(film.id)}>
+                <IconButton onClick={onClickEdit}>
                     <EditIcon />
                 </IconButton>
             }
         />
         <CardMedia
-            className='Film-banner'
+            className='FilmCard-banner'
             image={film.banner}
             title={film.name}
         />
         <CardContent>
-            <Typography className='Film-description'>
+            <Typography className='FilmCard-description'>
                 {film.description}
             </Typography>
         </CardContent>
     </Card>;
 
-Film.propTypes = { 
+FilmCard.propTypes = { 
     film: PropTypes.shape({
         id: PropTypes.string,
         name: PropTypes.string,
@@ -37,7 +37,7 @@ Film.propTypes = {
         description: PropTypes.string,
         banner: PropTypes.string
     }),
-    onClickEdit: PropTypes.func
+    onClickEdit: PropTypes.func.isRequired
 };
 
-export default Film;
+export default FilmCard;

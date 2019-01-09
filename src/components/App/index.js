@@ -1,58 +1,24 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import FilmList from './../FilmList';
-import FilmEdit from './../FilmEdit';
-import { films } from './../../data.js';
+import FilmDashboard from '../../containers/FilmDashboard';
+import FilmList from '../../containers/FilmList';
+import FilmEdit from '../../containers/FilmEdit';
 import './App.css';
 
-class App extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            films: films,
-            editFilmId: null
-        }
-    }
-
-    onClickEdit = id => () => this.setState({ editFilmId: id });
-
-    onClickCancel = () => this.setState({ editFilmId: null });
-    
-    onClickSave = film => () => {
-        const { films, editFilmId } = this.state;
-
-        const newFilms = [ ...films ];
-        const filmIndex = films.findIndex(film => film.id === editFilmId);
-        
-        film.year = +film.year;
-        newFilms[filmIndex] = { ...film };
-
-        this.setState({ films: newFilms, editFilmId: null });
-    }
-
-    render() {
-        const { films, editFilmId } = this.state;
-        const film = films.find(film => film.id === editFilmId);
-
-        return (
-            <div className='App'>
-                <header className='App-header'>
-                    { 
-                        film ? 
-                        <FilmEdit film={film} onClickSave={this.onClickSave} onClickCancel={this.onClickCancel} /> : 
-                        <FilmList films={films} onClickEdit={this.onClickEdit} /> 
-                    }
-                </header>
-            </div>
-        );
-    }
-}
-
-App.propTypes = { 
-    films: PropTypes.array, 
-    editFilmId: PropTypes.string
-};
+const App = () => (
+    <div className='App'>
+        <header className='App-header'>
+            <Router>
+                <Switch>
+                    <Route path="/" exact component={ FilmList } />
+                    <Route path="/list/" component={ FilmList } />
+                    <Route path="/dashboard/" component={ FilmDashboard } />
+                    <Route path="/edit/:id" component={ FilmEdit } />
+                </Switch>
+            </Router>
+        </header>
+    </div>
+);
 
 export default App;

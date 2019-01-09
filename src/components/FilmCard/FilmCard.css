@@ -1,11 +1,11 @@
-.Film {
+.FilmCard {
     max-width: 300px;
 }
 
-.Film-banner {
+.FilmCard-banner {
     height: 200px;
 }
 
-.Film-description {
+.FilmCard-description {
     text-align: justify;
 }
