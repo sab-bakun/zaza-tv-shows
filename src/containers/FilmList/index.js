@@ -21,7 +21,7 @@ class FilmList extends Component {
                         <List>
                             { 
                                 this.props.films.map(film => 
-                                    <FilmItem film={film} onClickEdit={ () => this.props.history.push('/edit/' + film.id) } />
+                                    <FilmItem key={film.id} film={film} onClickEdit={ () => this.props.history.push('/edit/' + film.id) } />
                                 )
                             }
                         </List>
