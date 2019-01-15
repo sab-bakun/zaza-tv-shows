@@ -6,12 +6,18 @@ import { saveFilm } from '../../actions';
 import { editFilmField } from '../../actions';
 import { initializeEditFilmForm } from '../../actions';
 import { clearEditFilmForm } from '../../actions';
+import { Link } from 'react-router-dom';
 
 import './FilmEdit.css';
 
 class FilmEdit extends Component {
 
     onChangeField = field => event => this.props.onChangeField(field, event.target.value);
+
+    onClickCancel = e => {
+        e.preventDefault();
+        this.props.history.goBack();
+    };
 
     componentDidMount() {
         this.props.initializeForm(this.props.match.params.id);
@@ -24,7 +30,6 @@ class FilmEdit extends Component {
     render() {
         const { banner } = this.props.films.find(film => film.id === this.props.match.params.id);
 
-       
         return (
             <Card className='FilmEdit'>
                 <CardHeader
@@ -70,17 +75,16 @@ class FilmEdit extends Component {
                     />
                 </CardContent>
                 <CardActions>
-                    <Button size='small' color='primary' onClick={ 
-                        () => {
-                            this.props.onClickSave(this.props.match.params.id);
-                            this.props.history.push('/dashboard');
-                        }
-                    }>
-                        Save
-                    </Button>
-                    <Button size='small' color='secondary' onClick={ () => this.props.history.goBack() }>
-                        Cancel
-                    </Button>
+                    <Link to='/dashboard' className='FilmEdit-link'>
+                        <Button size='small' color='primary' onClick={ () => this.props.onClickSave(this.props.match.params.id)}>
+                            Save
+                        </Button>
+                    </Link>
+                    <Link to='' onClick={this.onClickCancel} className='FilmEdit-link'>
+                        <Button size='small' color='secondary' >
+                            Cancel
+                        </Button>
+                    </Link>
                 </CardActions>
             </Card>
         );

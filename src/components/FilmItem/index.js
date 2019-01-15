@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ListItem, ListItemText, ListItemAvatar, Avatar, Typography, IconButton, ListItemSecondaryAction } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
+import { Link } from 'react-router-dom';
 
 import './FilmItem.css';
 
-const FilmItem = ({ film, onClickEdit }) => 
+const FilmItem = ({ film }) => 
     <ListItem alignItems='flex-start'>
         <ListItemAvatar>
             <Avatar alt={film.name} src={film.banner} />
@@ -22,9 +23,11 @@ const FilmItem = ({ film, onClickEdit }) =>
             }
         />
         <ListItemSecondaryAction>
-            <IconButton onClick={onClickEdit}>
-                <EditIcon />
-            </IconButton>
+            <Link to={'/edit/' + film.id}>
+                <IconButton>
+                    <EditIcon />
+                </IconButton>
+            </Link>
         </ListItemSecondaryAction>
     </ListItem>;
 
@@ -36,8 +39,7 @@ FilmItem.propTypes = {
         country: PropTypes.string,
         description: PropTypes.string,
         banner: PropTypes.string
-    }),
-    onClickEdit: PropTypes.func.isRequired
+    })
 };
 
 export default FilmItem;

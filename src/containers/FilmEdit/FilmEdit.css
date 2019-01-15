@@ -22,3 +22,7 @@
     display: flex;
     justify-content: space-between;
 }
+
+.FilmEdit-link {
+    text-decoration: none;
+}

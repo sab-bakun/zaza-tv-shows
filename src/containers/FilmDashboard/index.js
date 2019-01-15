@@ -13,7 +13,7 @@ class FilmDashboard extends Component {
                 { 
                     this.props.films.map(film => 
                         <Grid key={film.id} item xs={12} sm={6} md={3}>
-                            <FilmCard film={film} onClickEdit={ () => this.props.history.push('/edit/' + film.id) } />
+                            <FilmCard film={film} />
                         </Grid>
                     )
                 }
