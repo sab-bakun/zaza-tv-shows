@@ -2,19 +2,29 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardHeader, CardMedia, CardContent, CardActions, TextField, Button } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { editFilm } from '../../actions';
+import { saveFilm } from '../../actions';
+import { editFilmField } from '../../actions';
+import { initializeEditFilmForm } from '../../actions';
+import { clearEditFilmForm } from '../../actions';
+
 import './FilmEdit.css';
 
 class FilmEdit extends Component {
 
-    nameRef = React.createRef();
-    yearRef = React.createRef();
-    descriptionRef = React.createRef();
-    countryRef = React.createRef();
+    onChangeField = field => event => this.props.onChangeField(field, event.target.value);
+
+    componentDidMount() {
+        this.props.initializeForm(this.props.match.params.id);
+    }
+
+    componentWillUnmount() {
+        this.props.clearForm();
+    }
 
     render() {
-        const { name, banner, year, description, country } = this.props.films.find(film => film.id === this.props.match.params.id);
+        const { banner } = this.props.films.find(film => film.id === this.props.match.params.id);
 
+       
         return (
             <Card className='FilmEdit'>
                 <CardHeader
@@ -22,8 +32,8 @@ class FilmEdit extends Component {
                         <TextField
                             className='FilmEdit-name'
                             label='Name'
-                            defaultValue={name}
-                            inputRef={this.nameRef}
+                            value={this.props.editFieldName}
+                            onChange={this.onChangeField('editFieldName')}
                         />
                     }
                     subheader={
@@ -32,14 +42,14 @@ class FilmEdit extends Component {
                                 className='FilmEdit-text'
                                 label='Year'
                                 type='number'
-                                defaultValue={year}
-                                inputRef={this.yearRef}
+                                value={this.props.editFieldYear}
+                                onChange={this.onChangeField('editFieldYear')}
                             />
                             <TextField
                                 className='FilmEdit-text'
                                 label='Country'
-                                defaultValue={country}
-                                inputRef={this.countryRef}
+                                value={this.props.editFieldCountry}
+                                onChange={this.onChangeField('editFieldCountry')}
                             />
                         </div>
                     }
@@ -47,7 +57,7 @@ class FilmEdit extends Component {
                 <CardMedia
                     className='FilmEdit-banner'
                     image={'../' + banner}
-                    title={name}
+                    title={this.props.editFieldName}
                 />
                 <CardContent>
                     <TextField
@@ -55,20 +65,14 @@ class FilmEdit extends Component {
                         label='Description'
                         multiline
                         rowsMax='6'
-                        defaultValue={description}
-                        inputRef={this.descriptionRef}
+                        value={this.props.editFieldDescription}
+                        onChange={this.onChangeField('editFieldDescription')}
                     />
                 </CardContent>
                 <CardActions>
                     <Button size='small' color='primary' onClick={ 
                         () => {
-                            this.props.onClickSave(
-                                this.props.match.params.id,
-                                this.nameRef.current.value,
-                                +this.yearRef.current.value,
-                                this.descriptionRef.current.value,
-                                this.countryRef.current.value
-                            );
+                            this.props.onClickSave(this.props.match.params.id);
                             this.props.history.push('/dashboard');
                         }
                     }>
@@ -94,15 +98,29 @@ FilmEdit.propTypes = {
             banner: PropTypes.string
         })
     ),
-    onClickSave: PropTypes.func.isRequired
+    editFieldName: PropTypes.string,
+    editFieldYear: PropTypes.number,
+    editFieldCountry: PropTypes.string,
+    editFieldDescription: PropTypes.string,
+    onClickSave: PropTypes.func.isRequired,
+    onChangeField: PropTypes.func.isRequired,
+    initializeForm: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
-    films: state.films
+    films: state.films,
+    editFieldName: state.editFieldName,
+    editFieldYear: state.editFieldYear,
+    editFieldCountry: state.editFieldCountry,
+    editFieldDescription: state.editFieldDescription,
+    clearForm: state.clearEditFilmForm
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onClickSave: (...args) => dispatch(editFilm(...args))
+    onClickSave: (id) => dispatch(saveFilm(id)),
+    onChangeField: (field, value) => dispatch(editFilmField(field, value)),
+    initializeForm: (id) => dispatch(initializeEditFilmForm(id)),
+    clearForm: () => dispatch(clearEditFilmForm())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilmEdit);
